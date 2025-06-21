@@ -2,14 +2,18 @@ package br.com.willianpicao.picpay_simplificado.entity.users;
 
 import java.io.Serializable;
 
+import br.com.willianpicao.picpay_simplificado.entity.Wallet;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +44,9 @@ public abstract class User implements Serializable {
     private String email;
 
     private String password;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Wallet wallet;
 
     public abstract Boolean canSendMoney();
 
