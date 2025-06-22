@@ -18,7 +18,7 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
-    public Boolean canSendMoney(User user, BigDecimal value) {
+    public Boolean canSendValue(User user, BigDecimal value) {
         return user.getWallet()
                 .getBalance()
                 .subtract(value)
