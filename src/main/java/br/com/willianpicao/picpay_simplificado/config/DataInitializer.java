@@ -2,6 +2,7 @@ package br.com.willianpicao.picpay_simplificado.config;
 
 import java.math.BigDecimal;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import br.com.willianpicao.picpay_simplificado.entity.Wallet;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
+@Profile("test")
 public class DataInitializer {
 
     private final UserRepository userRepository;
