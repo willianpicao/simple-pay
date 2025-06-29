@@ -9,10 +9,12 @@ import br.com.willianpicao.picpay_simplificado.service.TransferService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
-@RestController(value = "/transfer")
-public class TransferControll {
+@RestController
+@RequestMapping("/transfer")
+public class TransferControl {
     @Autowired
     TransferService transferService;
    

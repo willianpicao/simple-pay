@@ -10,6 +10,7 @@ import br.com.willianpicao.picpay_simplificado.entity.Transfer;
 import br.com.willianpicao.picpay_simplificado.entity.Wallet;
 import br.com.willianpicao.picpay_simplificado.exception.TransferNotAllowedException;
 import br.com.willianpicao.picpay_simplificado.repository.TransferRepository;
+import feign.FeignException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -45,18 +46,27 @@ public class TransferService {
         Wallet payerWallet = payer.getWallet();
         Wallet payeeWallet = payee.getWallet();
 
-        if (!authorizationService.isAuthorized()) {
-            throw new TransferNotAllowedException("Transfer not authorized by external service");
-        }
-
         walletService.subtractBalance(payerWallet, value);
         walletService.addBalance(payeeWallet, value);
 
-        Transfer transfer = new Transfer(value, payer, payee, LocalDateTime.now());
+        authorizeTransfer();
+
+        Transfer transfer = new Transfer(null, value, payer, payee, LocalDateTime.now());
         transferRepository.save(transfer);
 
         notificationService.sendNotification();
 
         return transfer;
     }
+
+    private void authorizeTransfer() {
+        try {
+            if (!authorizationService.isAuthorized()) {
+                throw new TransferNotAllowedException("Transfer not authorized by external service");
+            }
+        } catch (FeignException.Forbidden e) {
+            throw new TransferNotAllowedException("Transfer not authorized by external service");
+        }
+    }
+    
 }

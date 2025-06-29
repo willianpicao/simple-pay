@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.willianpicao.picpay_simplificado.entity.users.User;
+import br.com.willianpicao.picpay_simplificado.exception.UserNotFound;
 import br.com.willianpicao.picpay_simplificado.repository.UserRepository;
 
 @Service
@@ -15,7 +16,7 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() -> new UserNotFound("User not found with id: " + id));
     }
 
     public Boolean canSendValue(User user, BigDecimal value) {

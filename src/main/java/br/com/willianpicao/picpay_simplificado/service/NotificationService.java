@@ -16,7 +16,7 @@ public class NotificationService {
     public void sendNotification() {
         try {
         client.sendNotification();
-        } catch (HttpClientErrorException e) {
+        } catch (Exception e) {
             throw new BadRequestException("Error sending notification");
         }
     }
